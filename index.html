@@ -12,11 +12,50 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="./css/style.css" />
-    <title>Document</title>
+    <title>Image Electricals</title>
+    <style>
+      #loader{
+        position: fixed;
+        height: 100vh;
+        background: white;
+        display: grid;
+        place-items: center;
+        z-index: 10001;
+        width: 100%;
+      }
+      .lds-dual-ring {
+        display: inline-block;
+        width: 80px;
+        height: 80px;
+      }
+      .lds-dual-ring:after {
+        content: " ";
+        display: block;
+        width: 64px;
+        height: 64px;
+        margin: 8px;
+        border-radius: 50%;
+        border: 6px solid rgb(233, 233, 24);
+        border-color: rgb(233, 233, 24) transparent rgb(233, 233, 24) transparent;
+        animation: lds-dual-ring 1.2s linear infinite;
+      }
+      @keyframes lds-dual-ring {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
   </head>
   <body>
     <div class="main">
       <!-- Mobile nav start -->
+
+      <div id="loader">
+        <div class="lds-dual-ring"></div>
+      </div>
 
       <div class="hamburger">
         <div class="ham-inner">
@@ -25,8 +64,12 @@
         </div>
       </div>
 
+      <div class="get-back-to-top">
+        <img src="./assets/images/up-arrow.png" alt="arrow">
+      </div>
+
       <div class="mobile-menu">
-        <a href="#home">Home</a>
+        <a href="">Home</a>
         <a href="#about">About</a>
         <a href="#products">Products</a>
         <a href="#contact">Contact</a>
@@ -36,7 +79,7 @@
 
       <!-- header start -->
 
-      <div class="header" id="home">
+      <div class="header">
         <div class="header-phn">
           <p>+91-8446009955</p>
           <p>+91-8983049500</p>
@@ -54,7 +97,7 @@
 
       <!-- Nav start -->
 
-      <nav class="navbar">
+      <nav class="navbar" id="home">
         <a href="#home" class="nav-link">Home</a>
         <a href="#about" class="nav-link">About</a>
         <a href="#products" class="nav-link">Products</a>
@@ -262,9 +305,8 @@
           </div>
         </div>
         <div class="product-note" data-aos="fade-up">
-            <li><span></span> TAILOR MADE TERMINALS</li>
-            <li><span></span> We also deal in THERMOSTATS / TIMER SWITCHES</li>
-          </ol>
+          <li><span></span> TAILOR MADE TERMINALS</li>
+          <li><span></span> We also deal in THERMOSTATS / TIMER SWITCHES</li>
         </div>
       </div>
 

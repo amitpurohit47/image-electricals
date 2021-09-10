@@ -4,6 +4,7 @@ const navLinks = document.querySelectorAll(".nav-link");
 const ham = document.querySelector(".hamburger");
 const ham1 = ham.querySelector(".ham1");
 const ham2 = ham.querySelector(".ham2");
+const backTop = document.querySelector('.get-back-to-top');
 
 let hamopen = false;
 
@@ -26,111 +27,132 @@ function handleHam(e) {
   hamopen = !hamopen;
 }
 
+
+function removeLoader(){
+  document.getElementById('loader').style.display = 'none';
+}
+
 function initSmoothScrolling(container, animation) {
   /*
-   * @param {String} container Class or ID of the animation container
-   * @param {String} animation Name of the animation, e.g. smoothscroll
-   */
-  var sliderWidth = 0;
-  var animationWidth = 0;
-  var sliderHeight = $(">div>div:first-of-type", container).outerHeight(false);
-
-  $(">div>div", container).each(function () {
-    animationWidth += $(this).outerWidth(false);
+  * @param {String} container Class or ID of the animation container
+  * @param {String} animation Name of the animation, e.g. smoothscroll
+  */
+ var sliderWidth = 0;
+ var animationWidth = 0;
+ var sliderHeight = $(">div>div:first-of-type", container).outerHeight(false);
+ 
+ $(">div>div", container).each(function () {
+   animationWidth += $(this).outerWidth(false);
   });
-
+  
   // detect number of visible slides
   var slidesVisible =
-    $(container).width() /
-    $(">div>div:first-of-type", container).outerWidth(false);
+  $(container).width() /
+  $(">div>div:first-of-type", container).outerWidth(false);
   slidesVisible = Math.ceil(slidesVisible);
-
+  
   // count slides to determine animation speed
   var slidesNumber = $(">div>div", container).length;
   var speed = slidesNumber * 2;
-
+  
   // append the tail
   $(">div>div", container)
-    .slice(0, slidesVisible)
-    .clone()
-    .appendTo($(">div", container));
-
+  .slice(0, slidesVisible)
+  .clone()
+  .appendTo($(">div", container));
+  
   // Detect the slider width with appended tail
   $(">div>div", container).each(function () {
     sliderWidth += $(this).outerWidth(false);
   });
-
+  
   // set slider dimensions
   $(">div", container).css({ width: sliderWidth, height: sliderHeight });
-
+  
   // Insert styles to html
   $(
     "<style type='text/css'>@keyframes " +
-      animation +
-      " { 0% { margin-left: 0px; } 100% { margin-left: -" +
-      animationWidth +
-      "px; } } " +
-      $(">div>div:first-of-type", container).selector +
-      " { -webkit-animation: " +
-      animation +
-      " " +
-      speed +
-      "s linear infinite; -moz-animation: " +
-      animation +
-      " " +
-      speed +
-      "s linear infinite; -ms-animation: " +
-      animation +
-      " " +
-      speed +
-      "s linear infinite; -o-animation: " +
-      animation +
-      " " +
-      speed +
-      "s linear infinite; animation: " +
-      animation +
-      " " +
-      speed +
-      "s linear infinite; }</style>"
-  ).appendTo("head");
-
-  // restart the animation (e.g. for safari & ie)
-  var cl = $(container).attr("class");
-  $(container)
+    animation +
+    " { 0% { margin-left: 0px; } 100% { margin-left: -" +
+    animationWidth +
+    "px; } } " +
+    $(">div>div:first-of-type", container).selector +
+    " { -webkit-animation: " +
+    animation +
+    " " +
+    speed +
+    "s linear infinite; -moz-animation: " +
+    animation +
+    " " +
+    speed +
+    "s linear infinite; -ms-animation: " +
+    animation +
+    " " +
+    speed +
+    "s linear infinite; -o-animation: " +
+    animation +
+    " " +
+    speed +
+    "s linear infinite; animation: " +
+    animation +
+    " " +
+    speed +
+    "s linear infinite; }</style>"
+    ).appendTo("head");
+    
+    // restart the animation (e.g. for safari & ie)
+    var cl = $(container).attr("class");
+    $(container)
     .removeClass(cl)
     .animate({ nothing: null }, 1, function () {
       $(this).addClass(cl);
     });
-}
-
-ham.addEventListener("click", handleHam);
-
-window.onload = function () {
-
-  initSmoothScrolling(".block", "smoothscroll");
-  var slides = document.getElementsByClassName("carousel-item"),
+  }
+  
+  
+  window.onload = function () {
+    
+    setTimeout(()=>{
+      removeLoader();
+    },1000);
+    
+    initSmoothScrolling(".block", "smoothscroll");
+    var slides = document.getElementsByClassName("carousel-item"),
     addActive = function (slide) {
       slide.classList.add("active");
     },
     removeActive = function (slide) {
       slide.classList.remove("active");
     };
-  addActive(slides[0]);
+    addActive(slides[0]);
+    
+    setInterval(function () {
+      for (var i = 0; i < slides.length; i++) {
+        if (i + 1 == slides.length) {
+          addActive(slides[0]);
+          slides[0].style.zIndex = 100;
+          setTimeout(removeActive, 350, slides[i]); //Doesn't be worked in IE-9
+          break;
+        }
+        if (slides[i].classList.contains("active")) {
+          slides[i].removeAttribute("style");
+          setTimeout(removeActive, 350, slides[i]); //Doesn't be worked in IE-9
+          addActive(slides[i + 1]);
+          break;
+        }
+      }
+    }, 4000);
+  };
 
-  setInterval(function () {
-    for (var i = 0; i < slides.length; i++) {
-      if (i + 1 == slides.length) {
-        addActive(slides[0]);
-        slides[0].style.zIndex = 100;
-        setTimeout(removeActive, 350, slides[i]); //Doesn't be worked in IE-9
-        break;
-      }
-      if (slides[i].classList.contains("active")) {
-        slides[i].removeAttribute("style");
-        setTimeout(removeActive, 350, slides[i]); //Doesn't be worked in IE-9
-        addActive(slides[i + 1]);
-        break;
-      }
-    }
-  }, 4000);
-};
+  function getBackToTop(){
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  }
+  
+  ham.addEventListener("click", handleHam);
+  mobileLinks.forEach(link => link.addEventListener('click',handleHam));
+  backTop.addEventListener('click',getBackToTop);
+  mobileLinks[0].addEventListener("click",getBackToTop);
