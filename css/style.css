@@ -769,4 +769,7 @@
   .product-note{
     font-size: 0.7rem;
   }
+  .header .header-logo{
+    margin-bottom: 0;
+  }
 }
